@@ -5,76 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <title>Document</title>
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-
-        body {
-            height: 100%;
-            background: #333;
-            overflow: hidden;
-        }
-
-        #canvas {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        ul,
-        li {
-            list-style: none;
-            overflow: hidden;
-            height: 100%;
-        }
-
-        li {
-            position: absolute;
-            display: -webkit-box;
-            -webkit-box-pack: center;
-            -webkit-box-align: center;
-        }
-
-        li img {
-            max-width: 100%;
-            min-width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="./style/style.css">
 </head>
 
 <body>
     <div id="canvas"></div>
     <script>
         var list = [{
-            height: 252,
-            width: 500,
-            path: '1.jpg'
+            // height: 252,
+            // width: 500,
+            path: './img/1.jpg'
         }, {
-            height: 800,
-            width: 1280,
-            path: '2.jpg'
+            // height: 800,
+            // width: 1280,
+            path: './img/2.jpg'
         }, {
-            height: 391,
-            width: 220,
-            path: '3.jpg'
+            // height: 391,
+            // width: 220,
+            path: './img/3.jpg'
         }, {
-            height: 610,
-            width: 343,
-            path: '4.gif'
+            // height: 610,
+            // width: 343,
+            path: './img/4.gif'
         }, {
-            height: 419,
-            width: 670,
-            path: '5.jpg'
+            // height: 419,
+            // width: 670,
+            path: './img/5.jpg'
         }, {
-            height: 360,
-            width: 640,
-            path: '6.jpg'
+            // height: 360,
+            // width: 640,
+            path: './img/6.jpg'
         }, {
-            height: 568,
-            width: 305,
-            path: '7.jpg'
+            // height: 568,
+            // width: 305,
+            path: './img/7.jpg'
         }];
 
         function Slide(opts) {
@@ -90,31 +54,54 @@
             this.radio = window.innerHeight / window.innerWidth;
             this.scaleW = window.innerWidth;
             this.index = 0;
-        };
+        }
+
+        Slide.prototype.loadImage = function (url) {
+            return new Promise(function (reslove, reject) {
+                var image = new Image();
+                image.onload = function () {
+                    reslove(image)
+                }
+                image.src = url
+                image.onerror = reject
+            })
+        }
+
         Slide.prototype.renderDOM = function () {
             var wrap = this.wrap,
                 data = this.list,
-                len = data.length;
-            this.outer = document.createElement('ul');
-
-            for (var i = 0; i < len; i++) {
-                var item = data[i],
-                    li = document.createElement('li');
-                li.style.width = window.innerWidth + 'px';
-                li.style.webkitTransform = 'translate3d(' + i * this.scaleW + 'px, 0, 0)';
-                if (item) {
-                    if (item.height / item.width > this.radio) {
-                        li.innerHTML = '<img height="' + window.innerHeight + '" src="' + item.path + '">';
+                self = this,
+                images = [],
+                promsies = [];
+            self.outer = document.createElement('ul');
+            data.forEach(function (item) {
+                var p = self.loadImage(item.path).then(function (image) {
+                    images.push(image)
+                }).catch(function (err) {
+                    console.log(err)
+                })
+                promsies.push(p);
+            })
+            Promise.all(promsies).then(function () {
+                images.forEach(function (item, index) {
+                    var li = document.createElement('li');
+                    li.style.width = window.innerWidth + 'px';
+                    li.style.webkitTransform = 'translate3d(' + index * self.scaleW + 'px, 0, 0)';
+                    if (item.height / item.width > self.radio) {
+                        li.innerHTML = '<img height="' + window.innerHeight + '" src="' + item.src +
+                            '">';
                     } else {
-                        li.innerHTML = '<img width="' + window.innerWidth + '" src="' + item.path + '">';
+                        li.innerHTML = '<img width="' + window.innerWidth + '" src="' + item.src +
+                            '">';
                     }
-                }
-                this.outer.appendChild(li);
-            }
-            this.outer.style.cssText = 'width: ' + this.scaleW + 'px';
-            wrap.style.height = window.innerHeight + 'px';
-            wrap.appendChild(this.outer);
+                    self.outer.appendChild(li);
+                })
+                self.outer.style.cssText = 'width: ' + self.scaleW + 'px';
+                wrap.style.height = window.innerHeight + 'px';
+                wrap.appendChild(self.outer);
+            })
         }
+
         Slide.prototype.goIndex = function (n) {
             var index = this.index,
                 lis = this.outer.getElementsByTagName("li"),
@@ -141,8 +128,8 @@
             lis[cidx].style.webkitTransform = 'translate3d(0,0,0)';
             lis[cidx - 1] && (lis[cidx - 1].style.webkitTransform = 'translate3d(-' + this.scaleW + 'px,0,0)');
             lis[cidx + 1] && (lis[cidx + 1].style.webkitTransform = 'translate3d(' + this.scaleW + 'px,0,0)');
-
         }
+
         Slide.prototype.bindDOM = function () {
             var self = this,
                 outer = self.outer,
