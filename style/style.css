@@ -129,3 +129,12 @@ li img {
   max-width: 100%;
   min-width: 100%;
 }
+
+.title {
+  position: fixed;
+  left: 50%;
+  transform: translateY(-50%);
+  top: 20px;
+  color: #fff;
+  line-height: 1;
+}

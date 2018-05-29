@@ -12,32 +12,18 @@
     <div id="canvas"></div>
     <script>
         var list = [{
-            // height: 252,
-            // width: 500,
             path: './img/1.jpg'
         }, {
-            // height: 800,
-            // width: 1280,
             path: './img/2.jpg'
         }, {
-            // height: 391,
-            // width: 220,
             path: './img/3.jpg'
         }, {
-            // height: 610,
-            // width: 343,
             path: './img/4.gif'
         }, {
-            // height: 419,
-            // width: 670,
             path: './img/5.jpg'
         }, {
-            // height: 360,
-            // width: 640,
             path: './img/6.jpg'
         }, {
-            // height: 568,
-            // width: 305,
             path: './img/7.jpg'
         }];
 
@@ -47,6 +33,7 @@
 
             this.init();
             this.renderDOM();
+            this.renderTitle(this.list.length)
             this.bindDOM();
         }
 
@@ -102,6 +89,26 @@
             })
         }
 
+        Slide.prototype.renderTitle = function (total) {
+            var titleWrap = document.createElement("div"),
+                currentSpan = document.createElement("span"),
+                totalSpan = document.createElement("span"),
+                split = document.createElement("span");
+            titleWrap.className = "title";
+            currentSpan.setAttribute("id", "current");
+            totalSpan.setAttribute("id", "total");
+
+            currentSpan.innerText = 1;
+            totalSpan.innerText = total;
+            split.innerText = ' / '
+
+            titleWrap.appendChild(currentSpan)
+            titleWrap.appendChild(split)
+            titleWrap.appendChild(totalSpan)
+
+            this.wrap.appendChild(titleWrap);
+        }
+
         Slide.prototype.goIndex = function (n) {
             var index = this.index,
                 lis = this.outer.getElementsByTagName("li"),
@@ -128,6 +135,8 @@
             lis[cidx].style.webkitTransform = 'translate3d(0,0,0)';
             lis[cidx - 1] && (lis[cidx - 1].style.webkitTransform = 'translate3d(-' + this.scaleW + 'px,0,0)');
             lis[cidx + 1] && (lis[cidx + 1].style.webkitTransform = 'translate3d(' + this.scaleW + 'px,0,0)');
+
+            document.getElementById("current").innerText = cidx + 1;
         }
 
         Slide.prototype.bindDOM = function () {
