@@ -1,6 +1,6 @@
-# 这是一个移动端查看图片的插件。
+### 这是一个移动端查看图片的插件。
 
-## Use
+#### how to use
 
 ```javascript
 new Slide({
