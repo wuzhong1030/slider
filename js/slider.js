@@ -1,4 +1,4 @@
-function Slide(opts) {
+function Slider(opts) {
     this.wrap = opts.dom;
     this.list = opts.list;
 
@@ -8,13 +8,13 @@ function Slide(opts) {
     this.bindDOM();
 }
 
-Slide.prototype.init = function () {
+Slider.prototype.init = function () {
     this.radio = window.innerHeight / window.innerWidth;
     this.scaleW = window.innerWidth;
     this.index = 0;
 }
 
-Slide.prototype.loadImage = function (url) {
+Slider.prototype.loadImage = function (url) {
     return new Promise(function (reslove, reject) {
         var image = new Image();
         image.onload = function () {
@@ -25,7 +25,7 @@ Slide.prototype.loadImage = function (url) {
     })
 }
 
-Slide.prototype.renderDOM = function () {
+Slider.prototype.renderDOM = function () {
     var wrap = this.wrap,
         data = this.list,
         self = this,
@@ -60,7 +60,7 @@ Slide.prototype.renderDOM = function () {
     })
 }
 
-Slide.prototype.renderTitle = function (total) {
+Slider.prototype.renderTitle = function (total) {
     var titleWrap = document.createElement("div"),
         currentSpan = document.createElement("span"),
         totalSpan = document.createElement("span"),
@@ -80,7 +80,7 @@ Slide.prototype.renderTitle = function (total) {
     this.wrap.appendChild(titleWrap);
 }
 
-Slide.prototype.goIndex = function (n) {
+Slider.prototype.goIndex = function (n) {
     var index = this.index,
         lis = this.outer.getElementsByTagName("li"),
         len = list.length,
@@ -110,7 +110,7 @@ Slide.prototype.goIndex = function (n) {
     document.getElementById("current").innerText = cidx + 1;
 }
 
-Slide.prototype.bindDOM = function () {
+Slider.prototype.bindDOM = function () {
     var self = this,
         outer = self.outer,
         len = self.list.legth,
@@ -168,4 +168,4 @@ Slide.prototype.bindDOM = function () {
     outer.addEventListener('touchend', endHandler);
 }
 
-export default Slide
+// export default Slider
