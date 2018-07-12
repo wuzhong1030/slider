@@ -1,19 +1,20 @@
 import Slider from './js/slider'
+import './style/style.css'
 
 var list = [{
-    path: './img/1.jpg'
+    path: './static/1.png'
 }, {
-    path: './img/2.jpg'
+    path: './static/2.jpg'
 }, {
-    path: './img/3.jpg'
+    path: './static/3.jpg'
 }, {
-    path: './img/4.gif'
+    path: './static/4.gif'
 }, {
-    path: './img/5.jpg'
+    path: './static/5.jpg'
 }, {
-    path: './img/6.jpg'
+    path: './static/6.jpg'
 }, {
-    path: './img/7.jpg'
+    path: './static/7.jpg'
 }];
 
 new Slider({
